@@ -1,0 +1,38 @@
+{% extends 'site-base.html' %}
+
+{% block title %}Home{% endblock %}
+
+
+{% block content %}
+    {% include 'includes/shopper/navbar.inc.html' %}
+    <div class="container">
+        {% include 'includes/shopper/header.inc.html' %}
+        <section class="bg-white shadow-sm" id="products">
+            <div id="product-header">
+                <h5>Available Products</h5>
+            </div>
+            <div class="container-fluid mt-2">
+                <div class="row">
+                    {% for product in products %}
+                        <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                        <div class="product-card mb-3 mb-sm-2">
+                            <a href="#">
+                                <img class="card-img-top" src="{{ product.img.url }}" alt="">
+                                <div class="p-2">
+                                    <span>{{ product.name|truncatechars:11 }}</span> <br>
+                                    <b style="padding-top: -1vh;">GHS {{ product.price }}</b>
+                                    {% if product.quantity == 0 %}
+                                        <span class="badge badge-danger">Out of Stock</span>
+                                    {% endif %}
+                                </div>
+                            </a>
+                        </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock content %}
+

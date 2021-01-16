@@ -9,9 +9,10 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
 from pathlib import Path
-
+from django.contrib.messages import constants as messages
+from django.core.management.utils import get_random_secret_key
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '-d68nc(m2@ei#k7wo=1+oz$%=%7q+27enisz$bg8=g**ntyhrt'
+SECRET_KEY = get_random_secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -37,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sendsms',
+    'shop.apps.ShopConfig',
+    'users.apps.UsersConfig'
 ]
 
 MIDDLEWARE = [
@@ -48,6 +52,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+SENDSMS_BACKEND = "sendsms.backends.console.SmsBackend"
+AUTH_USER_MODEL = "users.CustomUser"
 
 ROOT_URLCONF = 'core.urls'
 
@@ -118,3 +125,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-warning',
+    messages.INFO: 'alert-info',
+    messages.WARNING: 'alert-warning',
+    messages.SUCCESS: 'alert-success',
+    messages.ERROR: 'alert-danger'
+
+}
